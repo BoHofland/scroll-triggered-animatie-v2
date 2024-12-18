@@ -7,6 +7,7 @@ interface PortfolioItem {
   id: number;
   title: string;
   description: string;
+  label: string; 
   image: string;
 }
 
@@ -24,7 +25,7 @@ export default function PortfolioSection({ items }: Props) {
   );
 }
 
-function PortfolioItem({ item, index }: { item: PortfolioItem; index: number }) {
+function PortfolioItem({ item,}: { item: PortfolioItem; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: "-100px" });
   const controls = useAnimation();
@@ -37,20 +38,25 @@ function PortfolioItem({ item, index }: { item: PortfolioItem; index: number }) 
     }
   }, [isInView, controls]);
 
+  console.log(item.label); // Log the label property
+
   return (
-    <div ref={ref} className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
+    <div ref={ref} className="flex flex-col md:flex-row items-center gap-8 md:gap-24">
       <motion.div
-        className="md:w-1/2"
+        className="md:w-1/2 md:pl-16"
         initial={{ opacity: 0, x: -50 }}
         animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <h2 className="text-3xl font-bold mb-4">{item.title}</h2>
-        <p className="text-lg text-muted-foreground">{item.description}</p>
+        <div className="max-w-md">
+          <h2 className="text-3xl font-bold mb-4">{item.title}</h2>
+          <p className="text-lg text-muted-foreground">{item.description}</p>
+          <p className="text-lg text-muted-foreground">{item.label}</p>
+        </div>
       </motion.div>
       
       <motion.div
-        className="relative w-full md:w-[400px] h-[600px]"
+        className="relative w-full md:w-[500px] h-[600px]"
         initial={{ opacity: 0, y: 100 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
